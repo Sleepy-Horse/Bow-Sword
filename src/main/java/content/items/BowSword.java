@@ -17,22 +17,20 @@ import org.jetbrains.annotations.NotNull;
 import scirpts.registers.ModItems;
 
 public class BowSword extends SwordItem {
+    private long time;
+
     public BowSword() {
         super(Tiers.IRON, 3, -3F, new Properties().tab(CreativeModeTab.TAB_COMBAT).durability(225));
+        this.time = 0;
     }
 
     @Override
-    public void releaseUsing(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity entity, int timeDuration) {
-        if (!(entity instanceof Player player)) {
-            return;
-        }
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        System.out.println(level.getGameTime());
         ItemStack projectiles = player.getProjectile(new ItemStack(Items.BOW, 1));
-        int i = this.getUseDuration(itemStack) - timeDuration;
-        i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(itemStack, level, player, i, !projectiles.isEmpty() || player.getAbilities().instabuild);
-        if (i < 0) return;
-        float f = BowItem.getPowerForTime(i);
-        System.out.println(f);
-        if (!level.isClientSide && !((double)f < 0.1D) && (projectiles.getCount() > 2 || player.getAbilities().instabuild)) {
+        if (!level.isClientSide && level.getGameTime() - this.time > 10 && (projectiles.getCount() > 2 || player.getAbilities().instabuild)) {
+            this.time = level.getGameTime();
             level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             ArrowItem arrowitem = (ArrowItem) (projectiles.getItem() instanceof ArrowItem ? projectiles.getItem() : Items.ARROW);
             used(player, projectiles, itemStack);
@@ -42,6 +40,7 @@ public class BowSword extends SwordItem {
                 level.addFreshEntity(abstractarrow);
             }
         }
+        return InteractionResultHolder.pass(itemStack);
     }
 
     private void used(Player player, ItemStack projectiles, ItemStack itemStack){
@@ -53,22 +52,6 @@ public class BowSword extends SwordItem {
             if (projectiles.isEmpty()) {
                 player.getInventory().removeItem(projectiles);
             }
-        }
-    }
-
-
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        boolean flag = !player.getProjectile(itemstack).isEmpty();
-
-        InteractionResultHolder<ItemStack> ret = net.minecraftforge.event.ForgeEventFactory.onArrowNock(itemstack, level, player, hand, flag);
-        if (ret != null) return ret;
-
-        if (!player.getAbilities().instabuild && !flag) {
-            return InteractionResultHolder.fail(itemstack);
-        } else {
-            player.startUsingItem(hand);
-            return InteractionResultHolder.consume(itemstack);
         }
     }
 }
