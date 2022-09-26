@@ -10,7 +10,7 @@ import scirpts.registers.ModItems;
 
 @Mod(Main.MODID)
 public class Main {
-    public static final String MODID = "furnace";
+    public static final String MODID = "bowsword";
     final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
     public Main(){
