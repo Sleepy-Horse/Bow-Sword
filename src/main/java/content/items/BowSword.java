@@ -2,19 +2,14 @@ package content.items;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
-import scirpts.registers.ModItems;
 
 public class BowSword extends SwordItem {
     private final float shots_per_second;
@@ -47,9 +42,7 @@ public class BowSword extends SwordItem {
     private void used(Player player, ItemStack projectiles, ItemStack itemStack){
         if (!player.getAbilities().instabuild) {
             projectiles.shrink(3);
-            itemStack.hurtAndBreak(1, player, (p_40992_) -> {
-                p_40992_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
-            });
+            itemStack.hurtAndBreak(1, player, (p_40992_) -> p_40992_.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             if (projectiles.isEmpty()) {
                 player.getInventory().removeItem(projectiles);
             }
