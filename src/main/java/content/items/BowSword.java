@@ -18,14 +18,14 @@ public class BowSword extends SwordItem {
     public BowSword() {
         super(Tiers.IRON, 3, -3F, new Properties().tab(CreativeModeTab.TAB_COMBAT).durability(225));
         this.time = 0;
-        this.shots_per_second = 20F / 2;
+        this.shots_per_second = 3/2F;
     }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         ItemStack projectiles = player.getProjectile(new ItemStack(Items.BOW, 1));
-        if (!level.isClientSide && level.getGameTime() - this.time > this.shots_per_second && (projectiles.getCount() > 2 || player.getAbilities().instabuild)) {
+        if (!level.isClientSide && level.getGameTime() - this.time > 20 / this.shots_per_second && (projectiles.getCount() > 2 || player.getAbilities().instabuild)) {
             this.time = level.getGameTime();
             level.playSound((Player) null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             ArrowItem arrowitem = (ArrowItem) (projectiles.getItem() instanceof ArrowItem ? projectiles.getItem() : Items.ARROW);
