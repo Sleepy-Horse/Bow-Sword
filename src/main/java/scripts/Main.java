@@ -1,10 +1,10 @@
-package scirpts;
+package scripts;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import scirpts.registers.ModItems;
+import scripts.registers.ModItems;
 
 @Mod(Main.MODID)
 public class Main {
