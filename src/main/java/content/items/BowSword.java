@@ -42,7 +42,7 @@ public class BowSword extends SwordItem {
 
     private void used(Player player, ItemStack projectiles, ItemStack itemStack){
         if (!player.getAbilities().instabuild) {
-            projectiles.shrink(3);
+            projectiles.shrink(1);
             itemStack.hurtAndBreak(1, player, (p_40992_) -> p_40992_.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             if (projectiles.isEmpty()) {
                 player.getInventory().removeItem(projectiles);
